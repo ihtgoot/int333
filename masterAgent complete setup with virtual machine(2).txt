@@ -1,0 +1,112 @@
+master 
+1.sudo apt update && sudo apt upgrade -y
+2.sudo hostnamectl set-hostname puppetserver
+3.hostname
+4. ip addr
+5. sudo nano /etc/hosts
+6.127.0.0.1       localhost
+127.0.1.1       puppetserver
+
+192.168.56.10       puppetserver
+7. ping -c 3 puppetserver
+8. wget --content-disposition https://apt-puppetcore.puppet.com/public/puppet8-release-noble.deb
+9.sudo dpkg -i puppet8-release-noble.deb
+10.sudo nano /etc/apt/auth.conf.d/apt-puppetcore-puppet.conf
+11.machine apt-puppetcore.puppet.com
+login forge-key
+password YOUR_API_KEY
+12.sudo apt update
+13. sudo apt install puppetserver -y
+14. sudo /opt/puppetlabs/bin/puppetserver -v
+15.sudo apt install openjdk-21-jdk -y
+16. java -version  ----21 jdk requires
+17. sudo /opt/puppetlabs/bin/puppetserver ca setup
+
+18.sudo systemctl start puppetserver
+19. sudo systemctl enable puppetserver
+20.sudo systemctl status puppetserver
+21. sudo ss -lntp | grep 8140
+22.sudo ufw status
+23. ip addr show enp0s8
+24. ls /etc/netplan/
+25.sudo cat /etc/netplan/*.yaml
+26. sudo nano /etc/netplan/50-cloud-init.yaml
+network:
+  version: 2
+  ethernets:
+    enp0s3:
+      dhcp4: true
+    enp0s8:
+      dhcp4: false
+      addresses:
+        - 192.168.56.10/24
+ 27.sudo netplan generate
+28. sudo netplan apply
+29. ip addr show enp0s8
+30. ping -c 3 192.168.56.1
+31 sudo systemctl status puppetserver
+32. sudo /opt/puppetlabs/bin/puppet config print certname --section server
+33.
+sudo /opt/puppetlabs/bin/puppet config print server --section main
+
+34. sudo /opt/puppetlabs/bin/puppet config set server puppetserver --section server
+
+35 sudo /opt/puppetlabs/bin/puppetserver ca list
+36. sudo /opt/puppetlabs/bin/puppetserver ca sign --certname wahla
+
+sudo openssl x509 -in /etc/puppetlabs/puppet/ssl/certs/puppetserver.pem -noout -subject -issuer -serial -dates
+
+On Agent 
+
+1. C:\Windows\System32\drivers\etc\hosts
+2.192.168.56.10   puppetserver
+3. ping 192.168.56.10
+4.Test-NetConnection puppetserver -Port 8140
+5. puppet --version
+On powershell
+puppet config print confdir
+puppet config print server --section main
+where.exe puppet
+Get-Content "C:\Users\HP\.puppetlabs\etc\puppet\puppet.conf"
+Get-Content "C:\Users\HP\.puppetlabs\etc\puppet\puppet.conf"
+
+Test-NetConnection puppetserver -Port 8140
+
+ping puppetserver
+
+puppet config print server --section main
+puppet config print server_list --section main
+puppet config print certname --section main
+puppet agent --test --debug --trace --waitforcert 60
+puppet agent --test --waitforcert 60 --server=puppetserver
+
+& "C:\Program Files\Puppet Labs\Puppet\bin\puppet.bat" agent --test --server=puppetserver
+
+
+
+practical 1
+
+sudo mkdir -p /etc/puppetlabs/code/environments/production/manifests
+
+sudo nano /etc/puppetlabs/code/environments/production/manifests/site.pp
+
+file { 'C:/puppet-test.txt':
+  ensure  => file,
+  content => "Hello from Puppet Master!\n",
+}
+
+
+& "C:\Program Files\Puppet Labs\Puppet\bin\puppet.bat" agent --test --server=puppetserver
+
+Get-Content C:\puppet-test.txt
+
+Task 
+
+file { 'C:/puppet-second.txt':
+  ensure  => file,
+  content => "This is my second Puppet file.\n",
+}
+
+
+
+
