@@ -1,0 +1,18 @@
+
+#!/bin/bash
+
+echo "=== Puppet Agent Setup ==="
+
+read -rp "Enter Puppet Server private IP: " PRIVATE_IP
+
+sudo puppet config set server puppet --section main
+
+echo "$PRIVATE_IP puppet" | sudo tee -a /etc/hosts
+
+echo
+echo "Puppet Server:"
+getent hosts puppet
+
+echo
+echo "Testing TCP 8140:"
+nc -vz puppet 8140
