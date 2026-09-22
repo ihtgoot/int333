@@ -1,1 +1,2 @@
+
 sudo puppetserver ca sign --all

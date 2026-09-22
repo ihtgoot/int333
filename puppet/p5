@@ -1,0 +1,2 @@
+sudo puppet config set server puppet --section main
+
